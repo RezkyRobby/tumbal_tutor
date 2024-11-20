@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Content;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -20,12 +21,15 @@ class ContentController extends Controller
 
     public function create()
     {
-        return view('contents.create');
+        $courses = Course::select('id', 'course_name')->get();
+        return view('contents.create', compact('courses'));
     }
 
     public function store(Request $request)
     {
+        
         $request->validate([
+            'course_id' => 'required',
             'title' => 'required|string|max:255',
             'media_type' => 'required|in:video,file,youtube',
             'media_path' => 'required_if:media_type,youtube|url',
@@ -41,9 +45,9 @@ class ContentController extends Controller
         }
 
         Content::create([
+            'course_id' => $request->course_id,
             'title' => $request->title,
             'body' => $request->body,
-            'course_id' => $request->course_id,
             'teacher_id' => auth()->id(),
             'media_type' => $request->media_type,
             'media_path' => $mediaPath,

@@ -10,11 +10,7 @@ class Content extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_id',
-        'title',
-        'body',
-        'media_type',
-        'media_path',
+        'title', 'body', 'course_id', 'user_id', 'media_type', 'media_path'
     ];
 
     /**

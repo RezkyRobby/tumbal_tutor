@@ -1,17 +1,27 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+@section('content')
+<div class="container">
+    <h1>Dashboard</h1>
+    <p>Welcome, {{ auth()->user()->username ?? 'User' }}!</p>
+
+    <ul>
+        <li><a href="{{ route('profile.edit') }}">Edit Profile</a></li>
+        <li><a href="{{ route('certificates.index') }}">My Certificates</a></li>
+        <li><a href="{{ route('notifications.index') }}">My Notifications</a></li>
+    </ul>
+
+    @if(auth()->user()->role === 'Admin' || auth()->user()->role === 'Teacher')
+        <h2>Admin/Teacher Panel</h2>
+        <ul>
+            <li><a href="{{ route('courses.index') }}">Manage Courses</a></li>
+            <li><a href="{{ route('contents.index') }}">Manage Contents</a></li>
+        </ul>
+    @elseif(auth()->user()->role === 'Student')
+        <h2>Student Panel</h2>
+        <ul>
+            <li><a href="{{ route('enrollments.index') }}">My Enrollments</a></li>
+        </ul>
+    @endif
+</div>
+@endsection
