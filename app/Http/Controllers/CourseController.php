@@ -59,6 +59,11 @@ class CourseController extends Controller
     public function edit($id)
     {
         $course = Course::findOrFail($id);
+
+        if (!$this->authorizeCourseAction($course)) {
+            abort(403, 'You are not authorized to edit this course.');
+        }
+
         return view('courses.edit', compact('course'));
     }
 
@@ -73,12 +78,16 @@ class CourseController extends Controller
         ]);
 
         $course = Course::findOrFail($id);
+
+        if (!$this->authorizeCourseAction($course)) {
+            abort(403, 'You are not authorized to update this course.');
+        }
+
         $course->update([
             'course_name' => $request->course_name,
             'description' => $request->description,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'user_id' => auth()->id(),
         ]);
 
         return redirect()->route('courses.index')->with('success', 'Course updated successfully.');
@@ -88,9 +97,24 @@ class CourseController extends Controller
     public function destroy($id)
     {
         $course = Course::findOrFail($id);
+
+        if (!$this->authorizeCourseAction($course)) {
+            abort(403, 'You are not authorized to delete this course.');
+        }
+
         $course->delete();
 
         return redirect()->route('courses.index')->with('success', 'Course deleted successfully.');
     }
-}
 
+    /**
+     * Fungsi untuk memeriksa apakah user memiliki akses untuk mengedit/menghapus kursus.
+     */
+    private function authorizeCourseAction(Course $course): bool
+    {
+        $user = auth()->user();
+
+        // Hanya Admin atau Teacher yang membuat course yang dapat mengedit/menghapus
+        return $user->hasRole('Admin') || ($user->hasRole('Teacher') && $course->user_id === $user->id);
+    }
+}
