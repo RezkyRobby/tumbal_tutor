@@ -10,7 +10,9 @@
     <ul>
         @foreach ($enrollments as $enrollment)
             <li>
-                {{ $enrollment->course->name }} - Progress: {{ $enrollment->progress }}%
+                {{ $enrollment->course->course_name }} 
+                by {{ $enrollment->course->user->username ?? 'Unknown' }} 
+                - Progress: {{ $enrollment->progress }}%
                 <form action="{{ route('enrollments.updateProgress', $enrollment->id) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('PATCH')

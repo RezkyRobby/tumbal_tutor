@@ -50,6 +50,8 @@ Route::middleware(['auth', 'role:Student'])->group(function () {
     Route::resource('enrollments', EnrollmentController::class)->only(['index', 'store']);
     Route::patch('enrollments/{enrollment}/progress', [EnrollmentController::class, 'updateProgress'])->name('enrollments.updateProgress');
     Route::post('enrollments/{enrollment}/mark-as-done', [EnrollmentController::class, 'markAsDone'])->name('enrollments.markAsDone');
+    Route::get('/enrollments/join', [EnrollmentController::class, 'joinCourseForm'])->name('enrollments.join');
+    Route::post('/enrollments', [EnrollmentController::class, 'store'])->name('enrollments.store');
 });
 
 require __DIR__.'/auth.php';

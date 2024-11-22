@@ -13,15 +13,28 @@ class EnrollmentController extends Controller
      * Menampilkan daftar kursus yang diikuti oleh siswa yang login.
      */
     public function index()
-    {
-        // Pastikan hanya student yang bisa mengakses
-        if (Auth::user()->role !== 'Student') {
-            return redirect('/')->with('error', 'You do not have permission to view enrollments.');
-        }
-
-        $enrollments = Enrollment::where('user_id', Auth::id())->with('course')->get();
-        return view('enrollments.index', compact('enrollments'));
+{
+    if (Auth::user()->role !== 'Student') {
+        return redirect('/')->with('error', 'You do not have permission to view enrollments.');
     }
+
+    $enrollments = Enrollment::where('user_id', Auth::id())
+        ->with(['course', 'course.user']) // Include user pembuat course
+        ->get();
+
+    return view('enrollments.index', compact('enrollments'));
+}
+
+public function joinCourseForm()
+{
+    $courses = Course::with('user') // Pastikan 'teacher' digunakan, bukan 'user'
+        ->whereDoesntHave('enrollments', function ($query) {
+            $query->where('user_id', auth()->id());
+        })
+        ->get();
+
+    return view('enrollments.join', compact('courses'));
+}
 
     /**
      * Mendaftarkan siswa ke kursus yang dipilih.
