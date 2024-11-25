@@ -18,9 +18,9 @@ Route::get('/test-pdf', function () {
     return $pdf->stream('test.pdf');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [CourseController::class, 'dashboard'])->name('dashboard');
+});
 
 // Profil bisa diakses oleh semua pengguna yang login
 Route::middleware(['auth'])->group(function () {
@@ -37,12 +37,16 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('notifications', NotificationController::class)->only(['index']);
     Route::post('notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
     Route::delete('notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+    Route::resource('courses', CourseController::class);
+    Route::resource('contents', ContentController::class);
+    Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
+
 });
 
 // Middleware khusus Admin dan Teacher
 Route::middleware(['auth', 'role:Admin,Teacher'])->group(function () {
-    Route::resource('courses', CourseController::class);
-    Route::resource('contents', ContentController::class);
+    // Route::resource('courses', CourseController::class);
+    // Route::resource('contents', ContentController::class);
 });
 
 // Middleware khusus Student

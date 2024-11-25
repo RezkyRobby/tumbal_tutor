@@ -11,7 +11,7 @@ class CourseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:Admin,Teacher');
+        $this->middleware('role:Admin,Teacher,Student');
     }
     
     // Menampilkan daftar semua kursus
@@ -50,10 +50,10 @@ class CourseController extends Controller
 
     // Menampilkan detail kursus berdasarkan ID
     public function show($id)
-    {
-        $course = Course::findOrFail($id);
-        return view('courses.show', compact('course'));
-    }
+{
+    $course = Course::with('enrollments.user')->findOrFail($id);
+    return view('courses.show', compact('course'));
+}
 
     // Menampilkan form untuk mengedit kursus berdasarkan ID
     public function edit($id)
@@ -106,6 +106,23 @@ class CourseController extends Controller
 
         return redirect()->route('courses.index')->with('success', 'Course deleted successfully.');
     }
+
+    public function dashboard()
+{
+    $popularCourses = Course::withCount(['enrollments' => function ($query) {
+        $query->whereHas('user', function ($subQuery) {
+            $subQuery->where('role', 'Student'); // Hanya menghitung Student
+        });
+    }])
+    ->orderBy('enrollments_count', 'desc') // Urutkan berdasarkan jumlah enrollments
+    ->take(5) // Ambil 5 kursus teratas
+    ->get();
+    $allCourses = Course::all(); // Fetch all courses
+
+    return view('dashboard', compact('popularCourses', 'allCourses'));
+}
+
+
 
     /**
      * Fungsi untuk memeriksa apakah user memiliki akses untuk mengedit/menghapus kursus.
