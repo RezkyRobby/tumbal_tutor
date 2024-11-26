@@ -38,4 +38,15 @@ class NotificationController extends Controller
 
         return redirect()->back()->with('success', 'Notification deleted successfully.');
     }
+
+    public static function createNotification($userId, $title, $message, $courseId = null, $contentId = null)
+{
+    Notification::create([
+        'user_id' => $userId,
+        'title' => $title,
+        'message' => $message,
+        'course_id' => $courseId,
+        'content_id' => $contentId,
+    ]);
+}
 }

@@ -27,7 +27,7 @@ class EnrollmentController extends Controller
 
 public function joinCourseForm()
 {
-    $courses = Course::with('user') // Pastikan 'teacher' digunakan, bukan 'user'
+    $courses = Course::with('user') // Pastikan 'teacher' digunakan, bukan 'user' (kebalik pakcik)
         ->whereDoesntHave('enrollments', function ($query) {
             $query->where('user_id', auth()->id());
         })

@@ -38,15 +38,22 @@ Route::middleware(['auth'])->group(function () {
     Route::post('notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
     Route::delete('notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
     Route::resource('courses', CourseController::class);
+    Route::get('/contents/create', [ContentController::class, 'create'])->name('contents.create');
+    Route::get('/contents/{id}', [ContentController::class, 'view'])->name('contents.view');
     Route::resource('contents', ContentController::class);
     Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
+    Route::get('/courses/{id}/contents', [CourseController::class, 'viewContents'])->name('courses.contents');
+    Route::post('/contents/{id}/mark-as-done', [ProgressController::class, 'markAsDone'])->name('contents.markAsDone');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 
 });
 
 // Middleware khusus Admin dan Teacher
 Route::middleware(['auth', 'role:Admin,Teacher'])->group(function () {
-    // Route::resource('courses', CourseController::class);
-    // Route::resource('contents', ContentController::class);
+    Route::resource('courses', CourseController::class);
+    Route::resource('contents', ContentController::class);
 });
 
 // Middleware khusus Student

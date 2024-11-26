@@ -7,18 +7,25 @@
 </head>
 <body>
     <h1>Enrollments</h1>
+
+    @if (session('success'))
+        <p style="color: green;">{{ session('success') }}</p>
+    @endif
+
+    @if (session('error'))
+        <p style="color: red;">{{ session('error') }}</p>
+    @endif
+
     <ul>
         @foreach ($enrollments as $enrollment)
             <li>
-                {{ $enrollment->course->course_name }} 
+                <strong>{{ $enrollment->course->course_name }}</strong> 
                 by {{ $enrollment->course->user->username ?? 'Unknown' }} 
                 - Progress: {{ $enrollment->progress }}%
-                <form action="{{ route('enrollments.updateProgress', $enrollment->id) }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('PATCH')
-                    <input type="number" name="progress" value="{{ $enrollment->progress }}" min="0" max="100">
-                    <button type="submit">Update Progress</button>
-                </form>
+
+                <a href="{{ route('courses.contents', $enrollment->course->id) }}" class="btn btn-primary">
+                    View Contents
+                </a>
             </li>
         @endforeach
     </ul>

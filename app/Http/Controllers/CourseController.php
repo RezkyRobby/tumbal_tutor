@@ -90,6 +90,16 @@ class CourseController extends Controller
             'end_date' => $request->end_date,
         ]);
 
+        foreach ($course->enrollments as $enrollment) {
+            NotificationController::createNotification(
+                $enrollment->user_id,
+                "Course Updated: {$course->course_name}",
+                "The course '{$course->course_name}' has been updated.",
+                $course->id
+            );
+        }
+    
+
         return redirect()->route('courses.index')->with('success', 'Course updated successfully.');
     }
 
@@ -122,6 +132,12 @@ class CourseController extends Controller
     return view('dashboard', compact('popularCourses', 'allCourses'));
 }
 
+public function viewContents($id)
+{
+    $course = Course::with('contents')->findOrFail($id);
+
+    return view('courses.contents', compact('course'));
+}
 
 
     /**
