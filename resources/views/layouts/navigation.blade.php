@@ -38,6 +38,27 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        <x-dropdown-link :href="route('certificates.index')">
+                            {{ __('My Certificates') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('notifications.index')">
+                            {{ __('My Notifications') }}
+                        </x-dropdown-link>
+
+                        @if(auth()->user()->role === 'Admin' || auth()->user()->role === 'Teacher')
+                            <x-dropdown-link :href="route('courses.index')">
+                                {{ __('Manage Courses') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('contents.index')">
+                                {{ __('Manage Contents') }}
+                            </x-dropdown-link>
+                        @elseif(auth()->user()->role === 'Student')
+                            <x-dropdown-link :href="route('enrollments.index')">
+                                {{ __('My Enrollments') }}
+                            </x-dropdown-link>
+                        @endif
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -83,6 +104,25 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('certificates.index')">
+                    {{ __('My Certificates') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('notifications.index')">
+                    {{ __('My Notifications') }}
+                </x-responsive-nav-link>
+
+                @if(auth()->user()->role === 'Admin' || auth()->user()->role === 'Teacher')
+                    <x-responsive-nav-link :href="route('courses.index')">
+                        {{ __('Manage Courses') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('contents.index')">
+                        {{ __('Manage Contents') }}
+                    </x-responsive-nav-link>
+                @elseif(auth()->user()->role === 'Student')
+                    <x-responsive-nav-link :href="route('enrollments.index')">
+                        {{ __('My Enrollments') }}
+                    </x-responsive-nav-link>
+                @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">

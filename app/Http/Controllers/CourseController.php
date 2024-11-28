@@ -51,7 +51,7 @@ class CourseController extends Controller
     // Menampilkan detail kursus berdasarkan ID
     public function show($id)
 {
-    $course = Course::with('enrollments.user')->findOrFail($id);
+    $course = Course::with('enrollments.user', 'contents')->findOrFail($id);
     return view('courses.show', compact('course'));
 }
 

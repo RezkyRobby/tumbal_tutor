@@ -28,6 +28,23 @@
         @endforelse
     </ul>
 
+    <h2>Course Contents</h2>
+    <ul>
+        @forelse ($course->contents as $content)
+            <li>
+                <strong>{{ $content->title }}</strong> ({{ $content->media_type }}) description: {{ $content->body}}
+                <a href="{{ route('contents.view', $content->id) }}" class="btn btn-sm btn-primary">View Content</a>
+                @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+            </li>
+        @empty
+            <p>No contents available for this course.</p>
+        @endforelse
+    </ul>
+
     <a href="{{ route('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
 </div>
 @endsection

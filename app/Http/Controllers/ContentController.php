@@ -119,7 +119,15 @@ class ContentController extends Controller
 
      public function view($id)
 {
-    $content = Content::findOrFail($id);
+    $content = Content::with('course.enrollments')->findOrFail($id);
+
+    // Periksa apakah pengguna telah bergabung dengan kursus
+    $userEnrolled = $content->course->enrollments->where('user_id', auth()->id())->count();
+
+    if (!$userEnrolled) {
+        return redirect()->route('courses.show', $content->course_id)
+            ->with('error', 'You must join the course to view this content.');
+    }
 
     return view('contents.view', compact('content'));
 }

@@ -11,7 +11,10 @@
     <ul>
         @foreach ($courses as $course)
             <li>
-                {{ $course->course_name }} - {{ $course->description }}
+                <a href="{{ route('courses.show', $course->id) }}">
+                    {{ $course->course_name }}
+                </a>
+                - {{ $course->description }}
                 <a href="{{ route('courses.edit', $course->id) }}">Edit</a>
                 <form action="{{ route('courses.destroy', $course->id) }}" method="POST" style="display: inline;">
                     @csrf
@@ -21,5 +24,9 @@
             </li>
         @endforeach
     </ul>
+    <button type="button">
+        <a href="{{ route('dashboard') }}">Back to Dashboard</a>
+    </button>
+   
 </body>
 </html>
