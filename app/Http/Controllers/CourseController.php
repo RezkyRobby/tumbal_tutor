@@ -15,11 +15,17 @@ class CourseController extends Controller
     }
     
     // Menampilkan daftar semua kursus
-    public function index()
-    {
-        $courses = Course::all();
-        return view('courses.index', compact('courses'));
-    }
+    // app/Http/Controllers/CourseController.php
+
+public function index()
+{
+    $courses = Course::with(['enrollments' => function ($query) {
+        $query->with('user'); // Mengambil data user yang terdaftar
+    }])->get();
+
+    return view('courses.index', compact('courses'));
+}
+
 
     // Menampilkan form untuk membuat kursus baru
     public function create()
@@ -51,7 +57,7 @@ class CourseController extends Controller
     // Menampilkan detail kursus berdasarkan ID
     public function show($id)
 {
-    $course = Course::with('enrollments.user', 'contents')->findOrFail($id);
+    $course = Course::with(['enrollments.user', 'contents', 'forums.discussions.user'])->findOrFail($id);
     return view('courses.show', compact('course'));
 }
 

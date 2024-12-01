@@ -10,7 +10,7 @@
 
     <ul>
         @forelse ($notifications as $notification)
-            <li style="{{ $notification->read_at ? '' : 'font-weight: bold;' }}">
+            <li style="{{ $notification->updated_at ? 'color: gray;' : 'font-weight: bold;' }}">
                 <strong>{{ $notification->title }}</strong>
                 <p>{{ $notification->message }}</p>
                 @if ($notification->course)

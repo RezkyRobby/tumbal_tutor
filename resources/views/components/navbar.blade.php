@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white absolute top-0 w-full z-50 mt-50 border-y border-black">
+<nav x-data="{ open: false }" class="bg-white absolute top-0 w-full z-50 mt-50 border-y border-black mt-80">
     <div class="max-w-screen-xl mx-auto flex items-center justify-between p-4">
         <!-- Logo -->
         <a href="{{ route('dashboard') }}" class="flex ms-2 md:me-24">

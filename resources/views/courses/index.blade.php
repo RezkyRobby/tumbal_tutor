@@ -21,12 +21,21 @@
                     @method('DELETE')
                     <button type="submit">Delete</button>
                 </form>
+
+                <!-- Menampilkan progres siswa -->
+                <h4>Student Progress:</h4>
+                <ul>
+                    @foreach ($course->enrollments as $enrollment)
+                        <li>
+                            {{ $enrollment->user->username }}: {{ $enrollment->progress }}%
+                        </li>
+                    @endforeach
+                </ul>
             </li>
         @endforeach
     </ul>
     <button type="button">
         <a href="{{ route('dashboard') }}">Back to Dashboard</a>
     </button>
-   
 </body>
 </html>

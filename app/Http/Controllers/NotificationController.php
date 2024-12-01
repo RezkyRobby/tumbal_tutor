@@ -21,7 +21,7 @@ class NotificationController extends Controller
             abort(403, 'Unauthorized access to this notification.');
         }
 
-        $notification->update(['read_at' => now()]);
+        $notification->update(['updated_at' => now()]);
 
         return redirect()->back()->with('success', 'Notification marked as read.');
     }

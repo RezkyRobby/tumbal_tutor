@@ -88,6 +88,12 @@ public function joinCourseForm()
         }
         $enrollment->save();
 
+        if ($enrollment->progress === 100) {
+            // Generate sertifikat
+            $certificateController = new CertificateController();
+            $certificateController->generate($enrollment->id);
+        }
+
         return redirect()->back()->with('success', 'Progress marked as completed.');
     }
 

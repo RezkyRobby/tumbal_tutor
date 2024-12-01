@@ -24,7 +24,7 @@
         
         
         <!-- Page Content -->
-        <div class="font-sans antialiased min-h-screen bg-gray-100 dark:bg-white-900">
+        <div class="font-sans antialiased min-h-screen bg-gray-100 dark:bg-white-900 mt-30">
             @yield('content')
         </div>
     </body>

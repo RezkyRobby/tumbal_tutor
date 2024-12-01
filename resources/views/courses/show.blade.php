@@ -34,17 +34,28 @@
             <li>
                 <strong>{{ $content->title }}</strong> ({{ $content->media_type }}) description: {{ $content->body}}
                 <a href="{{ route('contents.view', $content->id) }}" class="btn btn-sm btn-primary">View Content</a>
-                @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
             </li>
         @empty
             <p>No contents available for this course.</p>
         @endforelse
     </ul>
 
+    <h2>Forums</h2>
+    <ul>
+        @foreach ($course->forums as $forum)
+            <li>
+                <a href="{{ route('forums.show', $forum->id) }}">{{ $forum->topic }}</a>
+                <p>{{ $forum->discussions->count() }} discussions</p>
+            </li>
+        @endforeach
+    </ul>
+
+    <!-- Tautan untuk membuat forum baru -->
+    @if(auth()->user()->role === 'Teacher' || auth()->user()->role === 'Student')
+    <a href="{{ route('forums.create', $course->id) }}" class="btn btn-primary">Create Forum</a>
+@endif
+
+    <br>
     <a href="{{ route('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
 </div>
 @endsection

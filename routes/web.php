@@ -9,6 +9,8 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DiscussionController;
+use App\Http\Controllers\ForumController;
 
 // Halaman landing
 Route::get('/', function () {
@@ -56,6 +58,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/contents/create', [ContentController::class, 'create'])->name('contents.create');
     Route::get('/contents/{id}', [ContentController::class, 'view'])->name('contents.view');
     Route::resource('contents', ContentController::class);
+
+    // Forums
+    Route::resource('forums', ForumController::class);
+    Route::get('courses/{course}/forums/create', [ForumController::class, 'create'])->name('forums.create');
+    Route::post('forums/{forum}/discussions', [DiscussionController::class, 'store'])->name('discussions.store');
+    Route::delete('discussions/{discussion}', [DiscussionController::class, 'destroy'])->name('discussions.destroy');
 });
 
 // Middleware khusus Admin dan Teacher

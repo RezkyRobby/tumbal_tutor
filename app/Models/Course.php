@@ -44,8 +44,8 @@ class Course extends Model
     /**
      * Relasi ke Forum.
      */
-    public function forum()
+    public function forums()
     {
-        return $this->hasOne(Forum::class);
+        return $this->hasMany(Forum::class);
     }
 }
