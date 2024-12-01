@@ -8,6 +8,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserController;
 
 // Halaman landing
 Route::get('/', function () {
@@ -46,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Kursus
     Route::get('/courses/all', [CourseController::class, 'showAll'])->name('courses.showAll');
+    Route::get('/courses/search', [CourseController::class, 'search'])->name('courses.search');
     // Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
     Route::resource('courses', CourseController::class);
     Route::get('/courses/{id}/contents', [CourseController::class, 'viewContents'])->name('courses.contents');
@@ -69,6 +71,10 @@ Route::middleware(['auth', 'role:Student'])->group(function () {
     Route::post('enrollments/{enrollment}/mark-as-done', [EnrollmentController::class, 'markAsDone'])->name('enrollments.markAsDone');
     Route::get('/enrollments/join', [EnrollmentController::class, 'joinCourseForm'])->name('enrollments.join');
     Route::post('/enrollments', [EnrollmentController::class, 'store'])->name('enrollments.store');
+});
+
+Route::middleware(['auth', 'role:Admin'])->group(function () {
+    Route::resource('users', UserController::class);
 });
 
 // Memuat file auth

@@ -150,4 +150,18 @@ public function viewContents($id)
         // Hanya Admin atau Teacher yang membuat course yang dapat mengedit/menghapus
         return $user->hasRole('Admin') || ($user->hasRole('Teacher') && $course->user_id === $user->id);
     }
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'search' => 'required|string|max:255',
+        ]);
+    
+        $searchTerm = $request->input('search');
+        $courses = Course::where('course_name', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+            ->get();
+    
+        return view('courses.search', compact('courses')); // Mengarahkan ke courses.search
+    }
 }

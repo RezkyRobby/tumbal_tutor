@@ -3,9 +3,23 @@
 @section('content')
 <div class="container mx-auto mt-8">
     <h1 class="text-2xl font-bold mb-6">Create New Content</h1>
-
+    
     <form action="{{ route('contents.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <!-- Pilih Kursus -->
         <div class="mb-4">
@@ -61,11 +75,11 @@
         <!-- Media Path/File -->
         <div class="mb-4" id="media-file-input" style="display: none;">
             <label for="media_file" class="block text-gray-700 font-medium">Upload Media</label>
-            <input type="file" id="media_file" name="media_file" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <input type="file" id="media_file" name="media_file" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{old('media_path')}}">
             @error('media_file')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
-        </div>
+        </div>        
 
         <div class="mb-4" id="media-url-input" style="display: none;">
             <label for="media_path" class="block text-gray-700 font-medium">YouTube URL</label>
