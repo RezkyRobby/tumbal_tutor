@@ -1,6 +1,5 @@
 <?php
 
-// app/Http/Controllers/CourseController.php
 namespace App\Http\Controllers;
 
 use App\Models\Course;
@@ -11,11 +10,14 @@ class CourseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:Admin,Teacher,Student');
+        // Batasi akses ke metode 'index' hanya untuk Teacher
+        $this->middleware('role:Teacher,Admin')->only('index');
+
+        // Semua pengguna (Admin, Teacher, Student) dapat mengakses metode selain 'index'
+        $this->middleware('role:Admin,Teacher,Student')->except('index');
     }
     
     // Menampilkan daftar semua kursus
-    // app/Http/Controllers/CourseController.php
 
 public function index()
 {

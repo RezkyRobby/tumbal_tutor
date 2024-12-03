@@ -11,15 +11,15 @@
         @csrf
         @method('PATCH')
 
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="{{ old('username', auth()->user()->username) }}">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ old('username', $user->username) }}" required>
         <br>
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ old('email', auth()->user()->email) }}">
+        <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" required>
         <br>
 
-        <button type="submit">Update</button>
+        <button type="submit">Update Profile</button>
     </form>
 
     <form action="{{ route('profile.destroy') }}" method="POST">

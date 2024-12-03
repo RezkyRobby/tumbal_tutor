@@ -6,8 +6,7 @@
     <title>Edit User</title>
 </head>
 <body>
-    <h1>Edit User</h1>
-    <form action="{{ route('users.update', $user) }}" method="POST">
+    <form action="{{ route('users.update', $user->id) }}" method="POST">
         @csrf
         @method('PATCH')
 
@@ -26,7 +25,7 @@
         </select>
         <br>
 
-        <button type="submit">Update</button>
+        <button type="submit">Update User</button>
     </form>
 </body>
 </html>

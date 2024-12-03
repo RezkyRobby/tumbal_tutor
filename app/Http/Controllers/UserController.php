@@ -8,21 +8,42 @@ use Illuminate\Routing\Controller;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('role:Admin');
-    }
+
     public function index()
     {
         $users = User::all();
         return view('users.index', compact('users'));
     }
 
+    // Mengedit Profil Sendiri (User Biasa)
+    public function editProfile()
+    {
+        $user = auth()->user(); // Ambil pengguna yang login
+        return view('profile.edit', compact('user'));
+    }
+
+    // Memperbarui Profil Sendiri
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+        ]);
+
+        $user->update($request->only('username', 'email'));
+
+        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
+    }
+
+    // Mengedit Pengguna Lain (Admin)
     public function edit(User $user)
     {
         return view('users.edit', compact('user'));
     }
 
+    // Memperbarui Data Pengguna Lain (Admin)
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -31,10 +52,7 @@ class UserController extends Controller
             'role' => 'required|string|in:student,teacher',
         ]);
 
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->role = $request->role;
-        $user->save();
+        $user->update($request->only('username', 'email', 'role'));
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }

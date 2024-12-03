@@ -26,13 +26,14 @@ class ForumController extends Controller
             'topic' => 'required|string|max:255',
             'course_id' => 'required|exists:courses,id',
         ]);
-
-        Forum::create([
+    
+        $forum = Forum::create([
             'topic' => $request->topic,
             'course_id' => $request->course_id,
         ]);
-
-        return redirect()->route('forums.index')->with('success', 'Forum created successfully.');
+    
+        // Redirect ke halaman detail forum yang baru dibuat
+        return redirect()->route('forums.show', $forum->id)->with('success', 'Forum created successfully.');
     }
 
     public function show($id)

@@ -8,6 +8,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
         <link href="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.css" rel="stylesheet"/>
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -24,9 +25,11 @@
         
         
         <!-- Page Content -->
-        <div class="font-sans antialiased min-h-screen bg-gray-100 dark:bg-white-900 mt-30">
+        <div class="font-sans antialiased min-h-screen bg-gray-100 dark:bg-white-900 mt-24">
             @yield('content')
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+        <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     </body>
     </html>
 </html>

@@ -11,7 +11,9 @@ class ContentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:Admin,Teacher,Student');
+        $this->middleware('role:Teacher,Admin')->only('index');
+
+        $this->middleware('role:Admin,Teacher,Student')->except('index');
     }
     public function index()
     {

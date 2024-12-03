@@ -20,7 +20,7 @@
         </div>
         <div class="form-group">
             <label for="course_id">Select Course</label>
-            <select name="course_id" id="course_id" class="form-control" required>
+            <select name="course_id" id="course_id" class="form-control" required onchange="updateBackButton()">
                 @foreach ($courses as $course)
                     <option value="{{ $course->id }}">{{ $course->course_name }}</option>
                 @endforeach
@@ -29,6 +29,15 @@
         <button type="submit" class="btn btn-primary">Create Forum</button>
     </form>
 
-    <a href="{{ route('forums.show') }}" class="btn btn-secondary">Back to Forums</a>
+    <!-- Tombol kembali ke halaman detail kursus -->
+    <a id="backButton" href="{{ route('courses.show', $courses->first()->id) }}" class="btn btn-secondary">Back to Course</a>
 </div>
+
+<script>
+    function updateBackButton() {
+        const courseId = document.getElementById('course_id').value;
+        const backButton = document.getElementById('backButton');
+        backButton.href = `/courses/${courseId}`; // Sesuaikan dengan route yang benar
+    }
+</script>
 @endsection

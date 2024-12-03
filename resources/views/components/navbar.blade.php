@@ -1,9 +1,9 @@
-<nav x-data="{ open: false }" class="bg-white absolute top-0 w-full z-50 mt-50 border-y border-black mt-80">
+<nav x-data="{ open: false }" class="bg-gradient-to-r from-green-300 to-blue-200 absolute top-0 w-full z-50 mt-50 border-y border-gray-400">
     <div class="max-w-screen-xl mx-auto flex items-center justify-between p-4">
         <!-- Logo -->
         <a href="{{ route('dashboard') }}" class="flex ms-2 md:me-24">
-            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-black">
-                <p>Welcome, {{ auth()->user()->username ?? 'User' }}!</p>
+            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-black">
+                <p>Berjumpa Lagi, {{ auth()->user()->username ?? 'User' }}!</p>
             </span>
         </a>
 
@@ -12,51 +12,29 @@
             <div class="relative mr-2">
                 <!-- Search Input -->
                 <input type="search" id="default-search" name="search" class="block w-full p-4 ps-12 text-sm text-black border border-black rounded-lg bg-white focus:ring-0 focus:outline-none focus:border-violet-600" placeholder="Search Course..." required />
-                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-black hover:bg-violet-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-black hover:bg-green-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
             </div>
         </form>
 
         <!-- Navbar Links -->
         <div class="hidden md:flex items-center space-x-6">
-            <a href="{{ route('courses.showAll') }}" class="text-black hover:text-violet-600 transition">All Courses</a>
-            @if(auth()->user()->role === 'Teacher')
-                <a href="{{ route('courses.index') }}" class="text-black hover:text-violet-600 transition">Make Courses</a>
-                <a href="{{ route('contents.index') }}" class="text-black hover:text-violet-600 transition">Make Content</a>
+            
+            @if(auth()->user()->role === 'Teacher' || auth()->user()->role === 'Admin')
+                <a href="{{ route('courses.index') }}" class="text-black hover:text-green-500 transition">Make Courses</a>
+                <a href="{{ route('contents.index') }}" class="text-black hover:text-green-500 transition">Make Content</a>
             @endif
             @if(auth()->user()->role === 'Student')
-                <a href="{{ route('enrollments.index') }}" class="text-black hover:text-violet-600 transition">Joined Course</a>
-                <a href="{{ route('certificates.index') }}" class="text-black hover:text-violet-600 transition">Certificates</a>
-                <a href="{{ route('notifications.index') }}" class="text-black hover:text-violet-600 transition">Notifications</a>
+                <a href="{{ route('enrollments.index') }}" class="text-black hover:text-green-500 transition">Joined Course</a>
+                <a href="{{ route('certificates.index') }}" class="text-black hover:text-green-500 transition">Certificates</a>
+                <a href="{{ route('notifications.index') }}" class="text-black hover:text-green-500 transition">Notifications</a>
             @endif
 
-            <!-- Admin Dropdown -->
-            @if(auth()->user()->role === 'Admin')
-                <div class="relative">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-black hover:text-gray-200 hover:bg-violet-600 focus:outline-none transition ease-in-out duration-150">
-                                Admin
-                                <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </button>
-                        </x-slot>
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('users.index')">
-                                {{ __('Manage Users') }}
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-            @endif
 
-            <!-- Settings Dropdown -->
-            <div class="relative">
+              <!-- Settings Dropdown -->
+              <div class="relative">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-black hover:text-gray-200 hover:bg-violet-600 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-300 hover:text-gray-200 hover:bg-blue-300 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -69,12 +47,18 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+                        <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
+                        @if(auth()->user()->role === 'Admin')
+                        <x-dropdown-link :href="route('users.index')">
+                            {{ __('Manage Users') }}
+                        </x-dropdown-link>
+                        @endif
                     </x-slot>
                 </x-dropdown>
             </div>
